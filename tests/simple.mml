@@ -1,0 +1,13 @@
+#TITLE Test Song
+#GAME Test Game
+#COMPOSER Test
+
+#EX-PSG ABC H=3579545
+
+#CHANNEL A PSG
+#CHANNEL B PSG
+#CHANNEL C PSG
+
+A cdefgab>c<bagfedc
+B efgab>c<bagfe
+C gab>c<bag

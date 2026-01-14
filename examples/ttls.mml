@@ -1,0 +1,118 @@
+#TITLE Twinkle Twinkle Little Star
+#COMPOSER Traditional
+#EX-OPN2 ABCDEF
+
+; FM Instrument definitions for YM2612
+; Format: @xN = Op1(7) Op2(7) Op3(7) Op4(7) ALG/FB PAN
+;   Per op: DT/MUL, TL, RS/AR, AM/D1R, D2R, SL/RR, SSG-EG
+
+; @x0 - Soft flute/bell for melody (algorithm 7 = all carriers)
+@x0 = 1 20 31 8 6 42 0   ; Op1
+      2 25 31 10 8 58 0  ; Op2
+      1 30 28 12 10 74 0 ; Op3
+      1 15 31 6 4 26 0   ; Op4
+      7 $C0              ; Algorithm 7, center pan
+
+; @x1 - Warm pad for harmony
+@x1 = 1 35 28 5 3 90 0   ; Op1
+      2 40 26 6 4 106 0  ; Op2
+      1 45 24 8 5 122 0  ; Op3
+      1 30 30 4 2 74 0   ; Op4
+      4 $C0              ; Algorithm 4, center pan
+
+; @x2 - Plucky bass
+@x2 = 0 10 31 4 2 26 0   ; Op1
+      0 15 31 5 3 42 0   ; Op2
+      0 20 28 6 4 58 0   ; Op3
+      1 0 31 3 2 10 0    ; Op4
+      0 $C0              ; Algorithm 0, center pan
+
+; ============================================
+; Software Envelopes
+; ============================================
+
+; Volume envelopes (0-127 for OPN2)
+; @v0 - Melody: gentle attack, sustained
+@v0 = { 90 100 110 115 118 120 | 120 }
+
+; @v1 - Chord pad: slow swell
+@v1 = { 80 90 95 100 105 110 | 110 }
+
+; @v2 - Bass: punchy attack with decay
+@v2 = { 127 120 110 100 95 | 90 }
+
+; @v3 - Twinkle effect: pulsing volume
+@v3 = { 120 115 110 105 110 115 | 120 115 110 105 110 115 }
+
+; Arpeggio envelopes (semitone offsets)
+; @EN0 - Subtle shimmer (octave ping)
+@EN0 = { 0 0 0 0 12 0 0 0 | 0 }
+
+; @EN1 - Gentle vibrato-like wobble
+@EN1 = { 0 0 0 0 0 0 | 0 }
+
+; Panning envelopes (-1=left, 0=center, +1=right)
+; @P0 - Gentle stereo sway for melody
+@P0 = { 0 0 0 0 -1 -1 0 0 1 1 | 0 }
+
+; @P1 - Static left
+@P1 = { -1 | -1 }
+
+; @P2 - Static right
+@P2 = { 1 | 1 }
+
+; ============================================
+; Channel A - Melody with envelopes
+; ============================================
+A t120 l4 o4 @0 @v0 @P0
+A c c g g a a g2
+A f f e e d d c2
+A @v3 EN0 g g f f e e d2
+A g g f f e e d2 ENOF
+A @v0 c c g g a a g2
+A f f e e d d c2
+
+; ============================================
+; Chords: C=C-E-G, F=F-A-C, G=G-B-D
+; Progression per line:
+;   Line 1 (Twinkle twinkle): C - C - F - C
+;   Line 2 (How I wonder):   F - C - G - C
+;   Lines 3-4 (Up above):    C - G - C - G
+;   Lines 5-6: same as 1-2
+; ============================================
+
+; Channel B - Chord root with swell envelope
+B t120 l2 o3 @1 @v1 @P1
+B c c f c
+B f c g c
+B c g c g
+B c g c g
+B c c f c
+B f c g c
+
+; Channel C - Chord third
+C t120 l2 o3 @1 @v1
+C e e a e
+C a e b e
+C e b e b
+C e b e b
+C e e a e
+C a e b e
+
+; Channel D - Chord fifth with right pan
+D t120 l2 o3 @1 @v1 @P2
+D g g >c< g
+D >c< g >d< g
+D g >d< g >d<
+D g >d< g >d<
+D g g >c< g
+D >c< g >d< g
+
+; Channel E - Bass line with punchy envelope
+E t120 l2 o2 @2 @v2
+E c c f c
+E f c g c
+E c g c g
+E c g c g
+E c c f c
+E f c g c
